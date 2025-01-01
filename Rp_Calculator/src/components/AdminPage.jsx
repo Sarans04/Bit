@@ -1,110 +1,83 @@
 import React, { useContext, useState } from 'react';
 import { PIDsContext } from './PIDsContext';
-import './AdminPage.css';  // Import the CSS file
+import './AdminPage.css'; // Import the CSS file
+import adminImage from '../assets/admin.png'; // Corrected path
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
     const { pids } = useContext(PIDsContext);
     const [selectedPid, setSelectedPid] = useState('');
-    const [initialSubmission, setInitialSubmission] = useState('');
-    const [finalSubmission, setFinalSubmission] = useState('');
-    const [plagiarismCheck, setPlagiarismCheck] = useState('');
-    const [worklog, setWorklog] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!selectedPid) {
-            setError('Please select a PID.');
+            setError('submitting.');
             return;
         }
         setError('');
-        // Handle form submission logic here
+        navigate('/2');
+    };
+
+    const handleDownload = () => {
+        if (!selectedPid) {
+            setError('Please select a PID to download the PDF.');
+            return;
+        }
+        setError('');
+
+        // Open PDF in a new tab
+        const pdfPath = `/pdfs/${selectedPid}.pdf`; // Assuming PDFs are stored in the public/pdfs folder
+        window.open(pdfPath, '_blank'); // Open the PDF in a new browser tab
     };
 
     return (
-        <div className="user-container">
-            <h2 className="user-header">Admin Page</h2>
+        <div className="user-page">
+            <h2 className="user-header">Admin’s Marks</h2>
             <div className="user-content">
-                <p>Welcome, Admin! You can manage submissions and marks here.</p>
-            </div>
+                <div className="image-section">
+                    <h3 className="image-title">Tac Marks</h3>
+                    <img src={adminImage} alt="Review" className="user-image" />
+                </div>
+                <div className="form-section">
+                    <p className="welcome-text">Welcome, Reviewer! You can Download PDFs here...</p>
 
-            {pids.length > 0 ? (
-                <form className="user-form" onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="pid-select">Select PID:  </label>
-                        <select
-                            id="pid-select"
-                            value={selectedPid}
-                            onChange={(e) => setSelectedPid(e.target.value)}
-                        >
-                            <option value="" disabled>
-                                Choose
-                            </option>
-                            {pids.map((pid) => (
-                                <option key={pid} value={pid}>
-                                    {pid}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="initial-submission">Initial Submission (Out of 5):  </label>
-                        <select
-                            id="initial-submission"
-                            value={initialSubmission}
-                            onChange={(e) => setInitialSubmission(e.target.value)}
-                        >
-                            {[...Array(61).keys()].map((mark) => (
-                                <option key={mark} value={mark}>
-                                    {mark}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="final-submission">Final Submission (Out of 5):  </label>
-                        <select
-                            id="final-submission"
-                            value={finalSubmission}
-                            onChange={(e) => setFinalSubmission(e.target.value)}
-                        >
-                            {[...Array(11).keys()].map((mark) => (
-                                <option key={mark} value={mark}>
-                                    {mark}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="plagiarism-check">Plagiarism Check:</label>
-                        <select
-                            id="plagiarism-check"
-                            value={plagiarismCheck}
-                            onChange={(e) => setPlagiarismCheck(e.target.value)}
-                        >
-                            {[...Array(11).keys()].map((mark) => (
-                                <option key={mark} value={mark}>
-                                    {mark}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="worklog">Worklog:</label>
-                        <input
-                            type="text"
-                            id="worklog"
-                            value={worklog}
-                            onChange={(e) => setWorklog(e.target.value)}
-                            placeholder="Enter worklog details"
-                        />
-                    </div>
-                    {error && <p className="error-message">{error}</p>}
-                    <button type="submit">Submit</button>
-                </form>
-            ) : (
-                <p>No PIDs available.</p>
-            )}
+                    {pids.length > 0 ? (
+                        <form className="user-form" onSubmit={handleSubmit}>
+                            <div>
+                                <label htmlFor="pid-select">Select PID: </label>
+                                <select
+                                    id="pid-select"
+                                    value={selectedPid}
+                                    onChange={(e) => setSelectedPid(e.target.value)}
+                                >
+                                    <option value="" disabled>
+                                        Choose
+                                    </option>
+                                    {pids.map((pid) => (
+                                        <option key={pid} value={pid}>
+                                            {pid}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            {error && <p className="error-message">{error}</p>}
+
+                            <div className="button-div-download">
+                                <button type="button" onClick={handleDownload}>
+                                    Download PDF
+                                </button>
+                            </div>
+                            <div className="button-div-submit">
+                                <button type="submit">Next Page</button>
+                            </div>
+                        </form>
+                    ) : (
+                        <p>No PIDs available.</p>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
