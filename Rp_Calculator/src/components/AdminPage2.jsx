@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AdminPage.css'; // Import the CSS file
+import styles from './AdminPage2.module.css'; // Import the CSS Module
 import adminImage from '../assets/admin.png'; // Corrected path
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ const AdminPage2 = () => {
         plagiarism: ''
     });
     const [error, setError] = useState('');
+    const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -20,7 +21,10 @@ const AdminPage2 = () => {
             return;
         }
         setError('');
-        navigate('/admin2'); // Navigate to the next page
+        setSubmitted(true); // Show the submission message
+        setTimeout(() => {
+            navigate('/admin'); // Navigate to the admin page after a delay
+        }, 2000); // Navigate to the next page
     };
 
     const handleInputChange = (e) => {
@@ -29,17 +33,17 @@ const AdminPage2 = () => {
     };
 
     return (
-        <div className="user-page">
-            <h2 className="user-header">Admin’s Marks</h2>
-            <div className="user-content">
-                <div className="image-section">
-                    <h3 className="image-title">Tac Marks</h3>
-                    <img src={adminImage} alt="Admin" className="user-image" />
+        <div className={styles.userPage}>
+            <h2 className={styles.userHeader}>Admin’s Marks</h2>
+            <div className={styles.userContent}>
+                <div className={styles.imageSection}>
+                    <h3 className={styles.imageTitle}>Tac Marks</h3>
+                    <img src={adminImage} alt="Admin" className={styles.userImage} />
                 </div>
-                <div className="form-section">
-                    <p className="welcome-text">Welcome, Admin! You can enter marks here...</p>
+                <div className={styles.formSection}>
+                    <p className={styles.welcome1Text}>Welcome, Admin! You can enter marks here...</p>
 
-                    <form className="user-form" onSubmit={handleSubmit}>
+                    <form className={styles.userForm} onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="tacMarks">Tac Marks (0-5): </label>
                             <select
@@ -49,7 +53,7 @@ const AdminPage2 = () => {
                                 onChange={handleInputChange}
                             >
                                 <option value="" disabled>
-                                    Select Tac Marks
+                                    Choose
                                 </option>
                                 {[0, 1, 2, 3, 4, 5].map((mark) => (
                                     <option key={mark} value={mark}>
@@ -68,7 +72,7 @@ const AdminPage2 = () => {
                                 onChange={handleInputChange}
                             >
                                 <option value="" disabled>
-                                    Select Initial Submission Marks
+                                    Choose
                                 </option>
                                 {[0, 1, 2, 3, 4, 5].map((mark) => (
                                     <option key={mark} value={mark}>
@@ -87,7 +91,7 @@ const AdminPage2 = () => {
                                 onChange={handleInputChange}
                             >
                                 <option value="" disabled>
-                                    Select Final Submission Marks
+                                Choose
                                 </option>
                                 {[0, 1, 2, 3, 4, 5].map((mark) => (
                                     <option key={mark} value={mark}>
@@ -106,7 +110,7 @@ const AdminPage2 = () => {
                                 onChange={handleInputChange}
                             >
                                 <option value="" disabled>
-                                    Select Plagiarism Marks
+                                Choose
                                 </option>
                                 {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((mark) => (
                                     <option key={mark} value={mark}>
@@ -116,10 +120,10 @@ const AdminPage2 = () => {
                             </select>
                         </div>
 
-                        {error && <p className="error-message">{error}</p>}
-
-                        <div className="button-div-submit">
-                            <button type="submit">Next Page</button>
+                        {error && <p className={styles.errorMessage}>{error}</p>}
+                        {submitted && <p className="success-message">Marks Submitted!</p>}
+                        <div className={styles.buttonDivSubmit}>
+                            <button type="submit">Submit Marks</button>
                         </div>
                     </form>
                 </div>
