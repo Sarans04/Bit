@@ -17,7 +17,7 @@ const AdminPage = () => {
             return;
         }
         setError('');
-        navigate('/2');
+        navigate('/admin2');
     };
 
     const handleDownload = () => {
@@ -41,7 +41,7 @@ const AdminPage = () => {
                     <img src={adminImage} alt="Review" className="user-image" />
                 </div>
                 <div className="form-section">
-                    <p className="welcome-text">Welcome, Reviewer! You can Download PDFs here...</p>
+                    <p className="welcome-text">Welcome, Admin! You can Download PDFs here...</p>
 
                     {pids.length > 0 ? (
                         <form className="user-form" onSubmit={handleSubmit}>

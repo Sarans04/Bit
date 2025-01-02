@@ -1,0 +1,49 @@
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start; /* Ensures everything aligns to the top */
+    margin: 0; /* Remove unnecessary margins */
+    padding: 0; /* Remove extra padding */
+    gap: 15px; /* Space between elements */
+    position: relative; /* Ensure proper positioning */
+    top: -20px; /* Move everything upwards */
+}
+
+.welcome-container {
+    margin-bottom: 10px; /* Adjust spacing below welcome text */
+}
+
+.welcome-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    margin: 0; /* Remove extra spacing */
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Reduced gap between form elements */
+}
+
+.user-form label {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.user-form select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.button-div-submit {
+    margin-top: 15px; /* Space between the last dropdown and the button */
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
