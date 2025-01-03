@@ -32,9 +32,14 @@ const UserPage = () => {
         window.open(pdfPath, '_blank'); // Open the PDF in a new browser tab
     };
 
+    const handleLogout = () => {
+        navigate('/');
+    };
+
     return (
         <div className="user-page">
             <h2 className="user-header">Reviewer’s Marks</h2>
+            <span><h6 className="logout-font" onClick={handleLogout}>Logout</h6></span>
             <div className="user-content">
                 <div className="image-section">
                     <h3 className="image-title">Team Communication</h3>

@@ -129,3 +129,11 @@ button:hover {
     font-size: 14px;
     text-align: center;
 }
+
+.logout-font {
+    font-size: 16px;
+    margin-left: 1350px;
+    margin-bottom: -400px;
+    margin-top: -50px;
+    cursor: pointer;
+}

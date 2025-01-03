@@ -32,9 +32,19 @@ const AdminPage = () => {
         window.open(pdfPath, '_blank'); // Open the PDF in a new browser tab
     };
 
+    const handleLogout = () => {
+        navigate('/');
+    };
+
+    const handleMark = () => {
+        navigate('marks');
+    }
+
     return (
         <div className="user-page">
             <h2 className="user-header">Admin’s Marks</h2>
+            <span><h6 className="log-font" onClick={handleLogout}>Logout</h6></span> 
+            <span><p className="view-marks" onClick={handleMark}>View Marks</p></span>           
             <div className="user-content">
                 <div className="image-section">
                     <h3 className="image-title">Tac Marks</h3>
