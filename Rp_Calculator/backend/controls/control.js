@@ -1,11 +1,21 @@
-const DataModel = require("../models/userModel");
+const DataModelAdmin = require("../models/userModel").AdminModel;
+const DataModelReviewer = require("../models/userModel").ReviewerModel;
 
+// Get marks by PID
 const getMarksByPID = async (req, res) => {
-    const { PID } = req.params; // Ensure you're capturing PID correctly
+    const { PID } = req.params;
     try {
-        const marksData = await DataModel.findOne({ PID });
-        if (marksData) {
-            res.status(200).json({ msg: "Marks Retrieved", data: marksData });
+        const adminMarksData = await DataModelAdmin.findOne({ PID });
+        const reviewerMarksData = await DataModelReviewer.findOne({ PID });
+
+        if (adminMarksData || reviewerMarksData) {
+            res.status(200).json({
+                msg: "Marks Retrieved",
+                data: {
+                    admin: adminMarksData || null,
+                    reviewer: reviewerMarksData || null,
+                },
+            });
         } else {
             res.status(404).json({ msg: "PID not found" });
         }
@@ -14,23 +24,30 @@ const getMarksByPID = async (req, res) => {
     }
 };
 
+// Add marks
 const addMarks = async (req, res) => {
-    const { PID, marks } = req.body;
-    if (!PID || marks === undefined) {
-        return res.status(400).json({ msg: "PID and marks are required" });
+    const { PID, marks, markPerson } = req.body;
+    if (!PID || marks === undefined || !markPerson) {
+        return res.status(400).json({ msg: "PID, marks, and markPerson are required" });
     }
+
+    const Model = markPerson === "admin" ? DataModelAdmin : DataModelReviewer;
     try {
-        const addingMarks = await DataModel.create({ PID, marks });
-        res.status(200).json({ msg: "Mark Added", data: addingMarks });
+        const addingMarks = await Model.create({ PID, marks, markPerson });
+        await addingMarks.save();
+        res.status(200).json({ msg: "Marks Added", data: addingMarks });
     } catch (error) {
         res.status(500).json({ msg: "Error in DB", error });
     }
 };
 
+// Delete marks
 const deleteMarks = async (req, res) => {
-    const { PID } = req.body;
+    const { PID, markPerson } = req.body;
+    const Model = markPerson === "admin" ? DataModelAdmin : DataModelReviewer;
+
     try {
-        const deletedMarks = await DataModel.findOneAndDelete({ PID });
+        const deletedMarks = await Model.findOneAndDelete({ PID });
         if (deletedMarks) {
             res.status(200).json({ msg: "Marks Deleted", data: deletedMarks });
         } else {
@@ -41,13 +58,21 @@ const deleteMarks = async (req, res) => {
     }
 };
 
+// Update marks
 const updateMarks = async (req, res) => {
-    const { PID, marks } = req.body;
-    if (!PID || marks === undefined) {
-        return res.status(400).json({ msg: "PID and marks are required" });
+    const { PID, marks, markPerson } = req.body;
+    if (!PID || marks === undefined || !markPerson) {
+        return res.status(400).json({ msg: "PID, marks, and markPerson are required" });
     }
+
+    const Model = markPerson === "admin" ? DataModelAdmin : DataModelReviewer;
+
     try {
-        const updatedMarks = await DataModel.findOneAndUpdate({ PID }, { marks }, { new: true });
+        const updatedMarks = await Model.findOneAndUpdate(
+            { PID },
+            { marks, markPerson },
+            { new: true }
+        );
         if (updatedMarks) {
             res.status(200).json({ msg: "Marks Updated", data: updatedMarks });
         } else {
@@ -58,11 +83,20 @@ const updateMarks = async (req, res) => {
     }
 };
 
+// Get all marks
 const getAllMarks = async (req, res) => {
     try {
-        const allMarksData = await DataModel.find(); 
-        if (allMarksData.length > 0) {
-            res.status(200).json({ msg: "All Marks Retrieved", data: allMarksData });
+        const allAdminMarks = await DataModelAdmin.find();
+        const allReviewerMarks = await DataModelReviewer.find();
+
+        if (allAdminMarks.length > 0 || allReviewerMarks.length > 0) {
+            res.status(200).json({
+                msg: "All Marks Retrieved",
+                data: {
+                    admin: allAdminMarks,
+                    reviewer: allReviewerMarks,
+                },
+            });
         } else {
             res.status(404).json({ msg: "No marks data found" });
         }

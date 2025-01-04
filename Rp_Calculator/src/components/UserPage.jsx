@@ -17,7 +17,7 @@ const UserPage = () => {
             return;
         }
         setError('');
-        navigate('/user2');
+        navigate('/user2', { state: { pid: selectedPid } });
     };
 
     const handleDownload = () => {

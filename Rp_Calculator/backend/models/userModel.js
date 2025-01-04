@@ -2,24 +2,37 @@ const mongoose = require("mongoose");
 
 const Schema1 = new mongoose.Schema({
     PID: {
-        type: Number,
+        type: String,
         required: true,
-        unique: true
+        unique: false,
     },
     marks: {
         type: Number,
-        required: true
-    }
+        required: true,
+    },
+    markPerson: {
+        type: String,
+        required: true,
+    },
 });
 
-// Create the data model
-const DataModel = mongoose.model('UserData', Schema1);
-
-// Ensure index creation at runtime
-DataModel.createIndexes().then(() => {
-    console.log("Indexes created successfully");
-}).catch((err) => {
-    console.error("Error creating indexes:", err);
+const Schema2 = new mongoose.Schema({
+    PID: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    marks: {
+        type: Number,
+        required: true,
+    },
+    markPerson: {
+        type: String,
+        required: true,
+    },
 });
 
-module.exports = DataModel;
+const AdminModel = mongoose.model("AdminData", Schema1);
+const ReviewerModel = mongoose.model("ReviewerData", Schema2);
+
+module.exports = { AdminModel, ReviewerModel };

@@ -17,7 +17,7 @@ const AdminPage = () => {
             return;
         }
         setError('');
-        navigate('/admin2');
+        navigate('/admin2', { state: { pid: selectedPid } });
     };
 
     const handleDownload = () => {

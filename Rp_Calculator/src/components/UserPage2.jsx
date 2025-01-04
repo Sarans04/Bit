@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Use this for navigation
+import { useNavigate, useLocation } from 'react-router-dom'; // Use this for navigation
 import './UserPage2.css';
+import axios from 'axios';
 
 const UserPage2 = () => {
+    const navi = useNavigate();
+    const location = useLocation();
+    const pid = location.state?.pid || null;
+
     const [marks, setMarks] = useState({
         clearObjectives: '',
         originalityCreativity: '',
@@ -12,33 +17,48 @@ const UserPage2 = () => {
         teamworkCollaboration: '',
         userExperience: '',
         continuousImprovement: '',
-        problemSolving: '', // New field
-        innovation: '' // New field
+        problemSolving: '',
+        innovation: ''
     });
 
     const [error, setError] = useState('');
-    const [showPopup, setShowPopup] = useState(false);
     const navigate = useNavigate();
+    const testObj = {
+        "PID": 70,
+        "marks": marks,
+         "markPerson":"user"   
+    }
+    
 
     const handleChange = (field, value) => {
         setMarks((prevMarks) => ({ ...prevMarks, [field]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =async (e) => {
         e.preventDefault();
-        const allFieldsFilled = Object.values(marks).every((mark) => mark !== '');
-        if (!allFieldsFilled) {
-            setError('Please fill out all fields.');
+        if (!marks.clearObjectives || !marks.originalityCreativity || !marks.technicalProficiency || !marks.implementation  || !marks.problemSolving || !marks.documentationPresentation || !marks.teamworkCollaboration  || !marks.userExperience || !marks.continuousImprovement || !marks.innovation) {
+            setError('Please fill all fields before submitting.');
             return;
         }
+        const allFieldsFilled = Object.values(marks).every((mark) => mark !== '');
+       
+        const userMark = Object.values(marks).reduce((total, mark) => total + Number(mark), 0);
+        console.log(userMark)
+        
+        alert(`User Mark (Reviewer): ${userMark}`);
+        try {
+            
+            const res = await axios.post("http://localhost:4000/marks",{ "PID": pid,
+                "marks": userMark,
+                 "markPerson":"user"   });
+            if(res)
+            {
+                console.log("data stored")
+            }
+        } catch (error) {
+            console.log(error);
+        }
         setError('');
-        setShowPopup(true);
-
-        // Automatically navigate after a short delay
-        setTimeout(() => {
-            setShowPopup(false);
-            navigate('/user'); // Replace '/user' with the appropriate route
-        }, 2000);
     };
 
     return (
@@ -206,11 +226,6 @@ const UserPage2 = () => {
                     </form>
                 </div>
             </div>
-            {showPopup && (
-                <div className="popup">
-                    <p>Marks submitted successfully!</p>
-                </div>
-            )}
         </div>
     );
 };

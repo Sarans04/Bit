@@ -1,14 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const { addMarks,
-    updateMarks,
-    deleteMarks,
-    getMarksByPID,
-    getAllMarks } = require('../controls/control')
-router.post('/addMarks', addMarks);
-router.put('/updateMarks', updateMarks);
-router.delete('/deleteMarks', deleteMarks);
+const { 
+    addMarks, 
+    updateMarks, 
+    deleteMarks, 
+    getMarksByPID, 
+    getAllMarks 
+} = require('../controls/control');
+
+// Route to add marks
+router.post('/marks', addMarks);
+
+// Route to update marks
+router.put('/marks', updateMarks);
+
+// Route to delete marks
+router.delete('/marks', deleteMarks);
+
+// Route to get marks by PID
 router.get('/marks/:PID', getMarksByPID);
-router.get('/allMarks', getAllMarks);
+
+// Route to get all marks
+router.get('/marks', getAllMarks);
 
 module.exports = router;
