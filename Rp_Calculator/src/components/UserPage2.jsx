@@ -34,33 +34,33 @@ const UserPage2 = () => {
         setMarks((prevMarks) => ({ ...prevMarks, [field]: value }));
     };
 
-    const handleSubmit =async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!marks.clearObjectives || !marks.originalityCreativity || !marks.technicalProficiency || !marks.implementation  || !marks.problemSolving || !marks.documentationPresentation || !marks.teamworkCollaboration  || !marks.userExperience || !marks.continuousImprovement || !marks.innovation) {
             setError('Please fill all fields before submitting.');
             return;
         }
-        const allFieldsFilled = Object.values(marks).every((mark) => mark !== '');
-       
         const userMark = Object.values(marks).reduce((total, mark) => total + Number(mark), 0);
-        console.log(userMark)
-        
+        console.log(userMark);
         alert(`User Mark (Reviewer): ${userMark}`);
         try {
-            
-            const res = await axios.post("http://localhost:4000/marks",{ "PID": pid,
+            const res = await axios.post("http://localhost:4000/marks", {
+                "PID": pid,
                 "marks": userMark,
-                 "markPerson":"user"   });
-            if(res)
-            {
-                console.log("data stored")
+                "markPerson": "user"
+            });
+            if (res) {
+                console.log("Data stored");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
         setError('');
+        setTimeout(() => {
+            navigate('/user'); // Navigate to the /user page
+        }, 2000);
     };
-
+    
     return (
         <div className="user-page">
             <h2 className="user-header">Reviewer’s Marks</h2>
