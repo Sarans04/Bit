@@ -12,6 +12,7 @@ const ViewMark = () => {
                 if (response.data && response.data.data) {
                     setMarksData(response.data.data);
                 }
+                console.log(response.data);
             } catch (error) {
                 console.error("Error fetching marks data:", error);
             }
@@ -36,10 +37,10 @@ const ViewMark = () => {
                         marksData.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.PID}</td>
-                                <td>{item.adminMarks || 'N/A'}</td>
-                                <td>{item.reviewerMarks || 'N/A'}</td>
+                                <td>{item.AdminMark || 'N/A'}</td>
+                                <td>{item.UserMark || 'N/A'}</td>
                                 <td>
-                                    {(item.adminMarks || 0) + (item.reviewerMarks || 0)}
+                                    {(item.Total || 0)}
                                 </td>
                             </tr>
                         ))

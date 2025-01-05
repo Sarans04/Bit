@@ -1,38 +1,23 @@
 const mongoose = require("mongoose");
+const ResultSchema = new mongoose.Schema({
+    PID:{
+        type:String,
+        require:true,
+        unique:true
+    },
+    AdminMark:{
+        type:Number,
+        require:true
+    },
+    UserMark:{
+        type:Number,
+        require:true
+    },
+    Total:{
+        type:Number,
+        require:true
+    }
+})
+const ResultModel   = mongoose.model("ResultSchema",ResultSchema);
 
-const Schema1 = new mongoose.Schema({
-    PID: {
-        type: String,
-        required: true,
-        unique: false,
-    },
-    marks: {
-        type: Number,
-        required: true,
-    },
-    markPerson: {
-        type: String,
-        required: true,
-    },
-});
-
-const Schema2 = new mongoose.Schema({
-    PID: {
-        type: String,
-        required: true,
-        unique: false,
-    },
-    marks: {
-        type: Number,
-        required: true,
-    },
-    markPerson: {
-        type: String,
-        required: true,
-    },
-});
-
-const AdminModel = mongoose.model("AdminData", Schema1);
-const ReviewerModel = mongoose.model("ReviewerData", Schema2);
-
-module.exports = { AdminModel, ReviewerModel };
+module.exports = {   ResultModel };
